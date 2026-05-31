@@ -245,17 +245,17 @@ function MealDetailCard({ card }) {
 
       <dl className="meal-detail-grid">
         <div>
-          <dt>{card.contextLabel || '예시 메뉴'}</dt>
+          <dt>📌 {card.contextLabel || '예시 메뉴'}</dt>
           <dd>{card.menu}</dd>
         </div>
         <div>
-          <dt>영양 포인트</dt>
+          <dt>💡 영양 포인트</dt>
           <dd>{card.nutrition}</dd>
         </div>
       </dl>
 
       <div className="meal-detail-block">
-        <h4>실천 팁</h4>
+        <h4>✅ 실천 팁</h4>
         <ul>
           {card.tips.map((tip) => (
             <li key={tip}>{tip}</li>
@@ -265,7 +265,7 @@ function MealDetailCard({ card }) {
 
       {card.healthyExamples && (
         <div className="meal-detail-block">
-          <h4>건강한 간단 아침 예</h4>
+          <h4>💡 건강한 간단 아침 예</h4>
           <ul>
             {card.healthyExamples.map((example) => (
               <li key={example}>{example}</li>
@@ -275,7 +275,7 @@ function MealDetailCard({ card }) {
       )}
 
       <p className="meal-caution">
-        <strong>조절이 필요한 선택:</strong> {card.caution}
+        <strong>⚠️ 줄이면 좋은 선택:</strong> {card.caution}
       </p>
 
       <p className="meal-action-line">{card.action}</p>
@@ -293,17 +293,17 @@ function RecipeCard({ recipe }) {
 
       <dl className="recipe-grid">
         <div>
-          <dt>추천 상황</dt>
+          <dt>🧑‍💼 추천 상황</dt>
           <dd>{recipe.situation}</dd>
         </div>
         <div>
-          <dt>구성</dt>
+          <dt>🥬 재료</dt>
           <dd>{recipe.ingredients}</dd>
         </div>
       </dl>
 
       <div className="recipe-points">
-        <h5>만드는 순서</h5>
+        <h5>👨‍🍳 만드는 순서</h5>
         <ol>
           {recipe.steps.map((step) => (
             <li key={step}>{step}</li>
@@ -312,7 +312,7 @@ function RecipeCard({ recipe }) {
       </div>
 
       <p className="recipe-tip">
-        <strong>실천 팁:</strong> {recipe.tip}
+        <strong>✅ 실천 팁:</strong> {recipe.tip}
       </p>
     </article>
   )
@@ -329,7 +329,7 @@ export default function MealTab() {
     <section className="meal-tab-panel">
       <div className="meal-header-card">
         <p className="eyebrow">MEAL GUIDE</p>
-        <h2>식사 가이드</h2>
+        <h2>🍽️ 식사 가이드</h2>
         <p>바쁜 직장인도 상황에 맞게 더 나은 선택을 할 수 있도록 도와줍니다.</p>
       </div>
 

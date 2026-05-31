@@ -468,6 +468,7 @@ button {
   display: grid;
   gap: 1rem;
   padding: 1.25rem;
+  padding-bottom: calc(1.45rem + env(safe-area-inset-bottom, 0px));
   border: 1px solid rgba(114, 170, 188, 0.2);
   border-radius: 1.6rem;
   background:
@@ -741,7 +742,7 @@ button {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-top: 0.85rem;
+  margin-top: 0.95rem;
 }
 
 .mission-btn {
@@ -780,13 +781,6 @@ button {
 
 .mission-btn.half.is-selected {
   background: linear-gradient(140deg, #e4f6f3, #eff8fb);
-}
-
-.mission-status {
-  margin-top: 0.45rem;
-  color: #5b7684;
-  font-size: 0.8rem;
-  line-height: 1.35;
 }
 
 .mission-today-summary {
@@ -983,9 +977,7 @@ button {
 }
 
 .meal-detail-grid div {
-  padding: 0.62rem 0.72rem;
-  border-radius: 0.8rem;
-  background: #f5fbfe;
+  padding: 0;
 }
 
 .meal-detail-grid dt {
@@ -1011,16 +1003,14 @@ button {
 
 .meal-detail-block ul {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  padding-left: 1.05rem;
+  list-style: disc;
   display: grid;
   gap: 0.35rem;
 }
 
 .meal-detail-block li {
-  padding: 0.58rem 0.65rem;
-  border-radius: 0.72rem;
-  background: #f4fafc;
+  padding-left: 0.05rem;
   color: #355a6b;
   line-height: 1.42;
 }
@@ -1036,11 +1026,9 @@ button {
 
 .meal-action-line {
   margin: 0;
-  padding: 0.65rem 0.72rem;
-  border-radius: 0.82rem;
-  background: linear-gradient(145deg, #e5f8f3, #eef9ff);
+  padding: 0;
   color: #224f61;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.45;
 }
 
@@ -1113,9 +1101,7 @@ button {
 }
 
 .recipe-grid div {
-  padding: 0.62rem 0.72rem;
-  border-radius: 0.8rem;
-  background: #f5fbfe;
+  padding: 0;
 }
 
 .recipe-grid dt {

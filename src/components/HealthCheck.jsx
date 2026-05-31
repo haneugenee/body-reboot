@@ -133,14 +133,23 @@ export default function HealthCheck() {
   const result = savedResult ?? calculatedResult
 
   useEffect(() => {
-    if (step !== 'result') return
-
-    const appMain = document.querySelector('.app-main')
-    if (appMain) {
-      appMain.scrollTop = 0
-      appMain.scrollTo({ top: 0, behavior: 'auto' })
+    const resetScrollToTop = () => {
+      const appMain = document.querySelector('.app-main')
+      if (appMain) {
+        appMain.scrollTop = 0
+        appMain.scrollTo({ top: 0, behavior: 'auto' })
+      }
+      window.scrollTo({ top: 0, behavior: 'auto' })
     }
-    window.scrollTo({ top: 0, behavior: 'auto' })
+
+    resetScrollToTop()
+    const frameId = requestAnimationFrame(resetScrollToTop)
+    const timeoutId = setTimeout(resetScrollToTop, 0)
+
+    return () => {
+      cancelAnimationFrame(frameId)
+      clearTimeout(timeoutId)
+    }
   }, [step])
 
   const emptyProfile = {

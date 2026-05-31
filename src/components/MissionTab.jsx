@@ -17,20 +17,12 @@ const getScoreByStatus = (status) => {
   return 0
 }
 
-const toStatusSummary = (typeLabel, status) => {
-  if (status === 'complete') return `오늘 ${typeLabel}: 완료로 기록됨`
-  if (status === 'half') return `오늘 ${typeLabel}: 절반 성공으로 기록됨`
-  return ''
-}
-
 const formatTodayLabel = () => {
   const today = new Date()
   return `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`
 }
 
 function MissionCard({ typeLabel, title, description, status, onSelect }) {
-  const statusText = toStatusSummary(typeLabel, status)
-
   return (
     <article className="mission-card">
       <span className="mission-type">{typeLabel}</span>
@@ -53,8 +45,6 @@ function MissionCard({ typeLabel, title, description, status, onSelect }) {
           절반 성공 +5점
         </button>
       </div>
-
-      {statusText && <p className="mission-status">{statusText}</p>}
     </article>
   )
 }
