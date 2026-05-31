@@ -29,6 +29,13 @@ const getRawScore = (question, optionIndex) => {
   return optionIndex + 1
 }
 
+const getQuestionMaxScore = (question) => {
+  if (Array.isArray(question.scores) && question.scores.length > 0) {
+    return Math.max(...question.scores.map((score) => Number(score ?? 0)))
+  }
+  return 4
+}
+
 const toFiftyScale = (scoreSum) => Math.round((scoreSum / 40) * 50)
 
 const getBmiCategory = (bmi) => {
@@ -71,13 +78,18 @@ export function calculateHealthResult(profile, questions, responses) {
   const activityScore = toFiftyScale(activityScoreSum)
   const lifestyleScore = dietScore + activityScore
 
-  const topImprovements = [...scoredQuestions]
+  const topImprovements = scoredQuestions
+    .filter((question) => question.rawScore < getQuestionMaxScore(question))
     .sort((a, b) => {
       if (a.rawScore !== b.rawScore) return a.rawScore - b.rawScore
       return a.order - b.order
     })
     .slice(0, 3)
     .map((question) => question.message)
+
+  const hasImprovements = topImprovements.length > 0
+  const maintenanceMessage =
+    '현재 생활습관 실천 점수가 매우 좋습니다. 지금의 식사·신체활동 습관을 꾸준히 유지해 보세요.'
 
   return {
     bmiValue,
@@ -86,5 +98,7 @@ export function calculateHealthResult(profile, questions, responses) {
     activityScore,
     lifestyleScore,
     topImprovements,
+    hasImprovements,
+    maintenanceMessage,
   }
 }

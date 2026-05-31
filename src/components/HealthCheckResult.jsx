@@ -40,12 +40,16 @@ export default function HealthCheckResult({
       </div>
 
       <section className="improvement-card">
-        <h3>주요 개선 포인트 TOP 3</h3>
-        <ul>
-          {result.topImprovements.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        <h3>{result.hasImprovements ? '주요 개선 포인트 TOP 3' : '생활습관 유지 포인트'}</h3>
+        {result.hasImprovements ? (
+          <ul>
+            {result.topImprovements.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>{result.maintenanceMessage}</p>
+        )}
       </section>
 
       <div className="result-actions">
