@@ -8,8 +8,8 @@ export default function Header() {
         <h1>BODY REBOOT</h1>
         <p className="brand-name">바디 리부트</p>
       </div>
-      <span className="brand-badge" aria-label="교육용 자가점검 앱">
-        EDU
+      <span className="brand-badge" aria-label="BODY REBOOT 로고">
+        <img src="/body-reboot-logo.png" alt="BODY REBOOT 이미지" />
       </span>
     </header>
   )
