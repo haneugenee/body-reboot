@@ -49,11 +49,11 @@ export default function HealthCheckResult({
       </section>
 
       <div className="result-actions">
-        <button type="button" className="secondary-action" onClick={onEditResponses}>
-          응답 수정하기
+        <button type="button" className="primary-action result-primary-action" onClick={onRestart}>
+          변화 기록 추가하기
         </button>
-        <button type="button" className="primary-action" onClick={onRestart}>
-          건강체크 다시 하기
+        <button type="button" className="result-edit-link" onClick={onEditResponses}>
+          응답 수정하기
         </button>
       </div>
     </section>

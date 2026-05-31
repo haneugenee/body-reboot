@@ -1691,8 +1691,26 @@ button {
 
 .result-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+}
+
+.result-primary-action {
+  margin-top: 0;
+}
+
+.result-edit-link {
+  justify-self: center;
+  min-height: 2.4rem;
+  padding: 0.25rem 0.55rem;
+  border: 0;
+  background: transparent;
+  color: #547182;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.14rem;
+  cursor: pointer;
 }
 
 .bottom-nav {
