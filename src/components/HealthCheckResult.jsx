@@ -27,15 +27,15 @@ export default function HealthCheckResult({
       <div className="result-score-grid">
         <article>
           <h3>식습관 점수</h3>
-          <p>{result.dietScore}점</p>
+          <p>{result.dietScore} / 50</p>
         </article>
         <article>
           <h3>신체활동 점수</h3>
-          <p>{result.activityScore}점</p>
+          <p>{result.activityScore} / 50</p>
         </article>
         <article className="result-total">
           <h3>종합 생활습관 점수</h3>
-          <p>{result.lifestyleScore}점</p>
+          <p>{result.lifestyleScore} / 100</p>
         </article>
       </div>
 

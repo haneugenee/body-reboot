@@ -56,7 +56,8 @@ export default function HealthSurvey({
                     onClick={() => handleSelect(question.id, option)}
                     aria-pressed={isSelected}
                   >
-                    {option}
+                    <span className="survey-option-dot" aria-hidden="true" />
+                    <span className="survey-option-label">{option}</span>
                   </button>
                 )
               })}
@@ -72,11 +73,24 @@ export default function HealthSurvey({
       <p className="eyebrow">LIFESTYLE SURVEY</p>
       <h2>생활습관 설문</h2>
       <p className="survey-guide">
-        최근 1~2주를 떠올리며 가장 가까운 답을 선택해주세요.
+        ※ 모든 질문은 최근 7일을 기준으로 응답해 주세요.
       </p>
 
       {renderQuestionGroup('식습관')}
       {renderQuestionGroup('신체활동')}
+
+      <section className="survey-reference-card" aria-label="참고 기준">
+        <h3>참고 기준</h3>
+        <p>
+          본 설문은 WHO 신체활동 가이드라인, 국제신체활동설문지(IPAQ),
+          국민건강영양조사(KNHANES), 식품의약품안전처 식생활 관련 지침, ACSM
+          운동처방 가이드라인을 참고하여 30~40대 사무직 남성의 생활습관 특성에
+          맞게 재구성했습니다.
+        </p>
+        <p className="survey-reference-note">
+          ※ 본 설문은 의료 진단이 아닌 영양교육 실습용 자가점검 도구입니다.
+        </p>
+      </section>
 
       <div className="survey-actions">
         <button type="button" className="secondary-action" onClick={onBack}>

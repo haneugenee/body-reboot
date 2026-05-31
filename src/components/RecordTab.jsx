@@ -17,6 +17,13 @@ const toStatusLabel = (status) => {
   return '없음'
 }
 
+const normalizeFiftyScaleScore = (score) => {
+  const value = Number(score ?? 0)
+  if (value <= 0) return 0
+  // Backward compatibility: older records were saved on a 100-point section scale.
+  return value > 50 ? Math.round(value / 2) : value
+}
+
 export default function RecordTab() {
   const history = useMemo(() => getHealthCheckHistory(), [])
   const missionRecords = useMemo(() => getDailyMissionRecords(), [])
@@ -36,7 +43,15 @@ export default function RecordTab() {
       ),
     [history],
   )
-  const trendData = sortedHistory.slice(-6)
+  const trendData = useMemo(
+    () =>
+      sortedHistory.slice(-6).map((item) => ({
+        ...item,
+        dietScore: normalizeFiftyScaleScore(item.dietScore),
+        activityScore: normalizeFiftyScaleScore(item.activityScore),
+      })),
+    [sortedHistory],
+  )
 
   const count = sortedHistory.length
 
@@ -116,7 +131,7 @@ export default function RecordTab() {
               valueKey="dietScore"
               unit="점"
               min={0}
-              max={100}
+              max={50}
             />
             <MiniTrendChart
               title="신체활동 점수 변화"
@@ -124,7 +139,7 @@ export default function RecordTab() {
               valueKey="activityScore"
               unit="점"
               min={0}
-              max={100}
+              max={50}
             />
             <MiniTrendChart
               title="종합 점수 변화"

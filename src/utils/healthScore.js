@@ -1,40 +1,35 @@
-const reverseScoredIds = new Set([
-  'diet_late_meal',
-  'diet_fast_food',
-  'diet_sugary_drink',
-  'diet_outside_food',
-  'diet_alcohol_frequency',
-  'diet_alcohol_amount',
-])
-
-const sectionTotals = {
-  식습관: 9,
-  신체활동: 6,
-}
-
 const improvementMessages = {
   diet_breakfast: '아침식사 빈도를 조금 늘려보세요.',
-  diet_late_meal: '늦은 저녁식사와 야식 횟수를 줄여보세요.',
-  diet_veggie_fruit: '채소와 과일을 하루에 한 번 더 추가해보세요.',
-  diet_protein: '끼니마다 단백질 식품을 조금씩 챙겨보세요.',
-  diet_fast_food: '인스턴트식품 대신 집밥이나 일반식 비중을 늘려보세요.',
+  diet_skip_meal: '바쁜 날에도 간단한 식사를 챙겨 결식을 줄여보세요.',
+  diet_delivery_fastfood: '배달·패스트푸드 횟수를 한 단계 줄여보세요.',
+  diet_late_night: '야식은 횟수부터 줄여보며 수면 전 공복 시간을 확보해보세요.',
   diet_sugary_drink: '단 음료를 물이나 무가당 음료로 바꿔보세요.',
-  diet_outside_food: '외식·배달 대신 직접 준비한 식사를 늘려보세요.',
-  diet_alcohol_frequency: '음주 빈도를 한 단계 줄여보세요.',
-  diet_alcohol_amount: '한 번 마실 때 음주량을 줄여보세요.',
-  activity_daily: '점심시간 산책처럼 일상 속 움직임을 늘려보세요.',
-  activity_steps: '하루 걸음 수를 조금씩 늘려보세요.',
-  activity_aerobic: '주간 유산소 운동 시간을 조금 더 늘려보세요.',
-  activity_strength: '근력운동을 주 1회 이상부터 꾸준히 시작해보세요.',
-  activity_duration: '운동 시간을 30분 이상으로 점차 늘려보세요.',
-  activity_intensity: '가벼운 활동에서 중간 강도 활동으로 단계적으로 올려보세요.',
+  diet_vegetable_effort: '매 끼니 채소를 조금씩 추가해 식사 균형을 맞춰보세요.',
+  diet_spicy_salty: '짠맛·자극적인 메뉴는 빈도와 양을 함께 줄여보세요.',
+  diet_protein_include: '한 끼에 단백질 식품을 한 가지 이상 포함해보세요.',
+  diet_nutrition_label: '식품 구매 전 영양성분표를 확인하는 습관을 들여보세요.',
+  diet_health_choice: '메뉴를 고를 때 건강 기준 한 가지를 먼저 정해보세요.',
+  activity_aerobic: '유산소 활동 횟수를 조금씩 늘려 심폐지구력을 키워보세요.',
+  activity_strength: '근력운동을 주 1~2회부터 규칙적으로 시작해보세요.',
+  activity_moderate: '일상에서 중간 강도 활동 시간을 조금 더 확보해보세요.',
+  activity_stretching: '가벼운 스트레칭을 자주 넣어 몸의 긴장을 풀어보세요.',
+  activity_commute_walk: '출퇴근 동선에서 걷기·계단 비중을 조금 더 늘려보세요.',
+  activity_weekend_active: '주말 여가를 활동형 일정으로 한 번 바꿔보세요.',
+  activity_break_sitting: '오래 앉아 있을 때 1시간마다 짧게 움직여보세요.',
+  activity_fitness_decline: '체력 저하 신호가 느껴질 때 짧은 운동부터 재시작해보세요.',
+  activity_too_tired: '피곤한 날용 짧은 운동 루틴을 미리 정해두세요.',
+  activity_plan_practice: '주간 운동 계획을 작게 세우고 실천 체크를 해보세요.',
 }
 
-const getRawScore = (questionId, optionIndex) =>
-  reverseScoredIds.has(questionId) ? 3 - optionIndex : optionIndex
+const getRawScore = (question, optionIndex) => {
+  if (optionIndex < 0) return 0
+  if (Array.isArray(question.scores) && question.scores.length > optionIndex) {
+    return Number(question.scores[optionIndex] ?? 0)
+  }
+  return optionIndex + 1
+}
 
-const toHundredScale = (scoreSum, questionCount) =>
-  Math.round((scoreSum / (questionCount * 3)) * 100)
+const toFiftyScale = (scoreSum) => Math.round((scoreSum / 40) * 50)
 
 const getBmiCategory = (bmi) => {
   if (bmi < 18.5) return '저체중'
@@ -54,7 +49,7 @@ export function calculateHealthResult(profile, questions, responses) {
   const scoredQuestions = questions.map((question, index) => {
     const selectedValue = responses[question.id]
     const optionIndex = question.options.findIndex((option) => option === selectedValue)
-    const rawScore = optionIndex >= 0 ? getRawScore(question.id, optionIndex) : 0
+    const rawScore = getRawScore(question, optionIndex)
 
     return {
       ...question,
@@ -72,9 +67,9 @@ export function calculateHealthResult(profile, questions, responses) {
     .filter((question) => question.section === '신체활동')
     .reduce((sum, question) => sum + question.rawScore, 0)
 
-  const dietScore = toHundredScale(dietScoreSum, sectionTotals.식습관)
-  const activityScore = toHundredScale(activityScoreSum, sectionTotals.신체활동)
-  const lifestyleScore = Math.round((dietScore + activityScore) / 2)
+  const dietScore = toFiftyScale(dietScoreSum)
+  const activityScore = toFiftyScale(activityScoreSum)
+  const lifestyleScore = dietScore + activityScore
 
   const topImprovements = [...scoredQuestions]
     .sort((a, b) => {
