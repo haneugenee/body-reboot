@@ -737,34 +737,88 @@ button {
 
 .mission-btn {
   min-height: 2.8rem;
+  border: 1px solid rgba(111, 157, 176, 0.24);
   border-radius: 0.95rem;
-  font-weight: 900;
+  color: #274b60;
+  background: #f7fcfe;
+  font-weight: 800;
   cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .mission-btn.complete {
-  border: 0;
-  color: #123b52;
-  background: linear-gradient(135deg, #a6e9df, #ffe58f);
+  border-color: rgba(91, 167, 157, 0.35);
 }
 
 .mission-btn.half {
-  border: 1px solid rgba(111, 157, 176, 0.3);
-  color: #224a62;
-  background: #f6fbfe;
+  border-color: rgba(122, 155, 171, 0.32);
 }
 
 .mission-btn.is-selected {
+  color: #133d53;
+  font-weight: 900;
+  border-color: rgba(72, 168, 158, 0.58);
   box-shadow: 0 0 0 0.2rem rgba(82, 180, 169, 0.2);
 }
 
+.mission-btn.complete.is-selected {
+  background: linear-gradient(140deg, #a8eadf, #ffe79f);
+}
+
+.mission-btn.half.is-selected {
+  background: linear-gradient(140deg, #e4f6f3, #eff8fb);
+}
+
 .mission-status {
-  margin-top: 0.7rem;
-  padding: 0.65rem 0.75rem;
-  border-radius: 0.8rem;
-  color: #2f5968;
-  background: #f2faf9;
+  margin-top: 0.45rem;
+  color: #5b7684;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.mission-today-summary {
+  border: 1px solid rgba(114, 170, 188, 0.2);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 22px rgba(34, 83, 111, 0.08);
+  padding: 0.72rem 0.8rem;
+}
+
+.mission-today-date {
+  margin: 0;
+  color: #5d7b88;
+  font-size: 0.8rem;
   font-weight: 700;
+}
+
+.mission-today-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.mission-today-grid p {
+  margin: 0;
+  color: #365a6b;
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.mission-today-grid strong {
+  color: #173f56;
+  font-size: 0.9rem;
+}
+
+.mission-today-grid .mission-today-total {
+  grid-column: 1 / -1;
+  padding-top: 0.2rem;
+  border-top: 1px dashed rgba(118, 167, 186, 0.34);
+  color: #21495d;
 }
 
 .walking-example-card {

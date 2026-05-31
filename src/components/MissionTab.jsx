@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { getTodayMissionRecord, saveTodayMissionRecord } from '../utils/storage.js'
 
 const DIET_TITLE = '식사 속도를 늦추고 15분 이상 천천히 먹기'
-const EXERCISE_TITLE = '하루 7,000보 도전하기'
+const EXERCISE_TITLE = '하루 7,000보 이상 걷기'
 
 const walkingStats = [
   { label: '오늘 걸음 수', value: '5,800보' },
@@ -11,13 +11,25 @@ const walkingStats = [
   { label: '목표까지 남은 걸음 수', value: '1,200보' },
 ]
 
+const getScoreByStatus = (status) => {
+  if (status === 'complete') return 10
+  if (status === 'half') return 5
+  return 0
+}
+
+const toStatusSummary = (typeLabel, status) => {
+  if (status === 'complete') return `오늘 ${typeLabel}: 완료로 기록됨`
+  if (status === 'half') return `오늘 ${typeLabel}: 절반 성공으로 기록됨`
+  return ''
+}
+
+const formatTodayLabel = () => {
+  const today = new Date()
+  return `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`
+}
+
 function MissionCard({ typeLabel, title, description, status, onSelect }) {
-  const statusText =
-    status === 'complete'
-      ? `${typeLabel}: 완료로 기록되었습니다.`
-      : status === 'half'
-        ? `${typeLabel}: 절반 성공으로 기록되었습니다.`
-        : ''
+  const statusText = toStatusSummary(typeLabel, status)
 
   return (
     <article className="mission-card">
@@ -50,9 +62,11 @@ function MissionCard({ typeLabel, title, description, status, onSelect }) {
 export default function MissionTab() {
   const todayRecord = useMemo(() => getTodayMissionRecord(), [])
   const [dietStatus, setDietStatus] = useState(todayRecord?.diet?.status ?? '')
-  const [exerciseStatus, setExerciseStatus] = useState(
-    todayRecord?.exercise?.status ?? '',
-  )
+  const [exerciseStatus, setExerciseStatus] = useState(todayRecord?.exercise?.status ?? '')
+
+  const dietScore = getScoreByStatus(dietStatus)
+  const exerciseScore = getScoreByStatus(exerciseStatus)
+  const totalScore = dietScore + exerciseScore
 
   const handleDietSelect = (status) => {
     setDietStatus(status)
@@ -94,16 +108,31 @@ export default function MissionTab() {
         <MissionCard
           typeLabel="운동 미션"
           title={EXERCISE_TITLE}
-          description="출퇴근길, 점심시간, 퇴근 후 걷기를 더해 오늘의 걸음 수를 늘려보세요."
+          description="출퇴근길, 점심시간, 퇴근 후 걷기를 통해 오늘의 걸음 수를 채워보세요."
           status={exerciseStatus}
           onSelect={handleExerciseSelect}
         />
       </section>
 
+      <section className="mission-today-summary" aria-label="오늘 점수 요약">
+        <p className="mission-today-date">오늘 기록 · {formatTodayLabel()}</p>
+        <div className="mission-today-grid">
+          <p>
+            식단 점수 <strong>{dietScore}점</strong>
+          </p>
+          <p>
+            운동 점수 <strong>{exerciseScore}점</strong>
+          </p>
+          <p className="mission-today-total">
+            하루 총점 <strong>{totalScore}점</strong>
+          </p>
+        </div>
+      </section>
+
       <section className="walking-example-card">
         <h3>건강 걷기 앱 연동 예시</h3>
         <p className="walking-note">
-          실제 연동 기능은 아니며, 건강 앱 기록을 참고해 직접 확인하는 예시 화면입니다.
+          실제 연동 기능은 아니며 건강 앱 기록을 참고해 직접 확인하는 예시 화면입니다.
         </p>
         <div className="walking-grid">
           {walkingStats.map((item) => (
