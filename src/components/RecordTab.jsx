@@ -222,7 +222,7 @@ export default function RecordTab() {
                 onClick={() => setSelectedDate(cell.dateKey)}
               >
                 <span className="month-day-number">{cell.day}</span>
-                <span className="month-day-score">{cell.hasRecord ? `${cell.score}점` : '없음'}</span>
+                <span className="month-day-score">{cell.hasRecord ? `${cell.score}점` : ''}</span>
               </button>
             )
           })}
