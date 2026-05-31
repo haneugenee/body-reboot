@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Header from './components/Header.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import TabContent from './components/TabContent.jsx'
@@ -54,14 +54,24 @@ const tabs = [
 
 export default function App() {
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
+  const mainRef = useRef(null)
   const activeTab = tabs.find((tab) => tab.id === activeTabId) ?? tabs[0]
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0, behavior: 'auto' })
+      mainRef.current.scrollTop = 0
+    }
+
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [activeTabId])
 
   return (
     <div className="app-shell">
       <div className="phone-frame">
         <Header />
 
-        <main className="app-main" aria-live="polite">
+        <main className="app-main" aria-live="polite" ref={mainRef}>
           <TabContent tab={activeTab} />
         </main>
 
