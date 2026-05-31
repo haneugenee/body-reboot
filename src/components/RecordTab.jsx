@@ -5,36 +5,29 @@ import {
   getDailyMissionRecords,
   getHealthCheckHistory,
   getMissionRecordByDate,
-  getRecentDateKeys,
   getTodayKey,
   getWeeklyMissionScore,
 } from '../utils/storage.js'
 
 const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토']
 
-const formatCalendarLabel = (dateKey) => {
-  const [year, month, day] = dateKey.split('-').map((value) => Number(value))
-  const date = new Date(year, month - 1, day)
-
-  return {
-    monthDay: `${month}/${day}`,
-    weekday: WEEKDAY_LABELS[date.getDay()],
-  }
-}
-
 const toStatusLabel = (status) => {
   if (status === 'complete') return '완료'
-  if (status === 'half') return '절반 성공'
-  return '아직 기록 없음'
+  if (status === 'half') return '일부'
+  return '없음'
 }
 
 export default function RecordTab() {
   const history = useMemo(() => getHealthCheckHistory(), [])
   const missionRecords = useMemo(() => getDailyMissionRecords(), [])
-  const dateKeys = useMemo(() => getRecentDateKeys(7), [])
   const weeklyMissionScore = useMemo(() => getWeeklyMissionScore(), [])
   const currentStreakDays = useMemo(() => getCurrentStreakDays(), [])
-  const [selectedDate, setSelectedDate] = useState(getTodayKey())
+  const todayKey = getTodayKey()
+  const [selectedDate, setSelectedDate] = useState(todayKey)
+  const [calendarMonth] = useState(() => {
+    const today = new Date()
+    return { year: today.getFullYear(), monthIndex: today.getMonth() }
+  })
 
   const sortedHistory = useMemo(
     () =>
@@ -65,6 +58,37 @@ export default function RecordTab() {
       : count === 1
         ? '건강체크를 한 번 더 진행하면 변화 그래프를 확인할 수 있어요.'
         : '최근 건강체크 결과를 기준으로 변화 기록을 확인할 수 있어요.'
+
+  const monthlyCalendarCells = useMemo(() => {
+    const firstDate = new Date(calendarMonth.year, calendarMonth.monthIndex, 1)
+    const firstWeekday = firstDate.getDay()
+    const daysInMonth = new Date(calendarMonth.year, calendarMonth.monthIndex + 1, 0).getDate()
+    const cells = []
+
+    for (let i = 0; i < firstWeekday; i += 1) {
+      cells.push({ key: `empty-${i}`, isEmpty: true })
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      const month = String(calendarMonth.monthIndex + 1).padStart(2, '0')
+      const dayText = String(day).padStart(2, '0')
+      const dateKey = `${calendarMonth.year}-${month}-${dayText}`
+      const dailyRecord = missionRecords[dateKey]
+      const score = Number(dailyRecord?.totalScore ?? 0)
+
+      cells.push({
+        key: dateKey,
+        isEmpty: false,
+        dateKey,
+        day,
+        score,
+        hasRecord: Boolean(dailyRecord),
+        isToday: dateKey === todayKey,
+      })
+    }
+
+    return cells
+  }, [calendarMonth.monthIndex, calendarMonth.year, missionRecords, todayKey])
 
   return (
     <section className="record-tab-panel">
@@ -155,15 +179,13 @@ export default function RecordTab() {
           <h3>최근 2회 비교</h3>
           <ul>
             <li>
-              BMI 변화: {Number(previous.bmi).toFixed(1)} {'->'}{' '}
-              {Number(latest.bmi).toFixed(1)}
+              BMI 변화: {Number(previous.bmi).toFixed(1)} {'->'} {Number(latest.bmi).toFixed(1)}
             </li>
             <li>
               식습관 점수 변화: {previous.dietScore}점 {'->'} {latest.dietScore}점
             </li>
             <li>
-              신체활동 점수 변화: {previous.activityScore}점 {'->'}{' '}
-              {latest.activityScore}점
+              신체활동 점수 변화: {previous.activityScore}점 {'->'} {latest.activityScore}점
             </li>
             <li>
               종합 점수 변화: {previous.totalScore}점 {'->'} {latest.totalScore}점
@@ -173,26 +195,34 @@ export default function RecordTab() {
       )}
 
       <section className="mission-calendar-card">
-        <h3>실천 달력</h3>
-        <div className="mission-calendar-grid">
-          {dateKeys.map((dateKey) => {
-            const dailyRecord = missionRecords[dateKey]
-            const totalScore = Number(dailyRecord?.totalScore ?? 0)
-            const dateInfo = formatCalendarLabel(dateKey)
-            const isSelected = selectedDate === dateKey
+        <h3>월간 실천 달력</h3>
+        <p className="month-label">
+          {calendarMonth.year}년 {calendarMonth.monthIndex + 1}월
+        </p>
+
+        <div className="month-weekday-row">
+          {WEEKDAY_LABELS.map((weekday) => (
+            <span key={weekday}>{weekday}</span>
+          ))}
+        </div>
+
+        <div className="month-calendar-grid">
+          {monthlyCalendarCells.map((cell) => {
+            if (cell.isEmpty) {
+              return <span key={cell.key} className="month-empty-cell" aria-hidden="true" />
+            }
+
+            const isSelected = selectedDate === cell.dateKey
 
             return (
               <button
+                key={cell.key}
                 type="button"
-                key={dateKey}
-                className={`date-chip ${isSelected ? 'is-selected' : ''}`}
-                onClick={() => setSelectedDate(dateKey)}
+                className={`month-date-cell ${cell.isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''} ${cell.hasRecord ? 'has-record' : 'no-record'}`}
+                onClick={() => setSelectedDate(cell.dateKey)}
               >
-                <span className="date-month-day">{dateInfo.monthDay}</span>
-                <span className="date-weekday">{dateInfo.weekday}</span>
-                <span className="date-score">
-                  {dailyRecord ? `${totalScore}점` : '기록 없음'}
-                </span>
+                <span className="month-day-number">{cell.day}</span>
+                <span className="month-day-score">{cell.hasRecord ? `${cell.score}점` : '없음'}</span>
               </button>
             )
           })}
@@ -216,10 +246,11 @@ export default function RecordTab() {
 
       <section className="mission-detail-card">
         <h4 className="mission-detail-title-compact">선택 날짜 기록</h4>
-        <h3>선택한 날짜의 미션 기록 상세</h3>
 
         {!selectedMissionRecord && (
-          <p className="mission-detail-empty">이 날짜에는 아직 미션 기록이 없습니다.</p>
+          <p className="mission-detail-empty">
+            아직 기록이 없습니다. 오늘의 미션을 선택하면 이곳에 표시됩니다.
+          </p>
         )}
 
         {selectedMissionRecord && (
@@ -235,51 +266,15 @@ export default function RecordTab() {
             <div>
               <dt>식단 미션</dt>
               <dd>
-                {selectedDiet?.status === 'complete' ? '완료' : '미완료'} ·{' '}
-                {shortMissionTitle(selectedDiet?.title)}
+                {toStatusLabel(selectedDiet?.status)} - {shortMissionTitle(selectedDiet?.title)}
               </dd>
             </div>
             <div>
               <dt>운동 미션</dt>
               <dd>
-                {selectedExercise?.status === 'complete' ? '완료' : '미완료'} ·{' '}
+                {toStatusLabel(selectedExercise?.status)} -{' '}
                 {shortMissionTitle(selectedExercise?.title)}
               </dd>
-            </div>
-          </div>
-        )}
-
-        {selectedMissionRecord && false && (
-          <div className="mission-detail-grid">
-            <div>
-              <dt>식단 미션 제목</dt>
-              <dd>{selectedDiet?.title || '아직 기록 없음'}</dd>
-            </div>
-            <div>
-              <dt>식단 미션 상태</dt>
-              <dd>{toStatusLabel(selectedDiet?.status)}</dd>
-            </div>
-            <div>
-              <dt>식단 미션 점수</dt>
-              <dd>{selectedDiet?.score ? `${selectedDiet.score}점` : '아직 기록 없음'}</dd>
-            </div>
-            <div>
-              <dt>운동 미션 제목</dt>
-              <dd>{selectedExercise?.title || '아직 기록 없음'}</dd>
-            </div>
-            <div>
-              <dt>운동 미션 상태</dt>
-              <dd>{toStatusLabel(selectedExercise?.status)}</dd>
-            </div>
-            <div>
-              <dt>운동 미션 점수</dt>
-              <dd>
-                {selectedExercise?.score ? `${selectedExercise.score}점` : '아직 기록 없음'}
-              </dd>
-            </div>
-            <div className="mission-detail-total">
-              <dt>해당 날짜 총점</dt>
-              <dd>{Number(selectedMissionRecord.totalScore ?? 0)}점</dd>
             </div>
           </div>
         )}
