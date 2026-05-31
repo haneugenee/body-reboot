@@ -39,8 +39,6 @@ export default function RecordTab() {
   const trendData = sortedHistory.slice(-6)
 
   const count = sortedHistory.length
-  const latest = count > 0 ? sortedHistory[count - 1] : null
-  const previous = count > 1 ? sortedHistory[count - 2] : null
 
   const selectedMissionRecord =
     getMissionRecordByDate(selectedDate) ?? missionRecords[selectedDate] ?? null
@@ -137,60 +135,6 @@ export default function RecordTab() {
               max={100}
             />
           </div>
-        </section>
-      )}
-
-      {latest && (
-        <section className="record-summary-card">
-          <h3>최근 건강체크 요약</h3>
-          <dl className="record-grid">
-            <div>
-              <dt>날짜</dt>
-              <dd>{latest.dateLabel || '-'}</dd>
-            </div>
-            <div>
-              <dt>닉네임</dt>
-              <dd>{latest.nickname || '-'}</dd>
-            </div>
-            <div>
-              <dt>BMI</dt>
-              <dd>
-                {Number(latest.bmi).toFixed(1)} ({latest.bmiCategory})
-              </dd>
-            </div>
-            <div>
-              <dt>식습관 점수</dt>
-              <dd>{latest.dietScore}점</dd>
-            </div>
-            <div>
-              <dt>신체활동 점수</dt>
-              <dd>{latest.activityScore}점</dd>
-            </div>
-            <div>
-              <dt>종합 점수</dt>
-              <dd>{latest.totalScore}점</dd>
-            </div>
-          </dl>
-        </section>
-      )}
-
-      {latest && previous && (
-        <section className="record-compare-card">
-          <h3>최근 2회 비교</h3>
-          <ul>
-            <li>
-              BMI 변화: {Number(previous.bmi).toFixed(1)} {'->'} {Number(latest.bmi).toFixed(1)}
-            </li>
-            <li>
-              식습관 점수 변화: {previous.dietScore}점 {'->'} {latest.dietScore}점
-            </li>
-            <li>
-              신체활동 점수 변화: {previous.activityScore}점 {'->'} {latest.activityScore}점
-            </li>
-            <li>
-              종합 점수 변화: {previous.totalScore}점 {'->'} {latest.totalScore}점
-            </li>
-          </ul>
         </section>
       )}
 

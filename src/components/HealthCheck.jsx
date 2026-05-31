@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import HealthCheckStart from './HealthCheckStart.jsx'
 import HealthSurvey from './HealthSurvey.jsx'
 import HealthCheckResult from './HealthCheckResult.jsx'
@@ -131,6 +131,17 @@ export default function HealthCheck() {
     [profile, surveyResponses],
   )
   const result = savedResult ?? calculatedResult
+
+  useEffect(() => {
+    if (step !== 'result') return
+
+    const appMain = document.querySelector('.app-main')
+    if (appMain) {
+      appMain.scrollTop = 0
+      appMain.scrollTo({ top: 0, behavior: 'auto' })
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [step])
 
   const emptyProfile = {
     nickname: '',
