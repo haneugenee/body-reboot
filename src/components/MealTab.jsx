@@ -22,6 +22,11 @@ const mealCategories = [
     message:
       '국밥, 중식, 튀김, 고기, 분식처럼 자주 먹는 메뉴를 조절하는 팁을 제공합니다.',
   },
+  {
+    key: 'recipe',
+    label: '간단 레시피',
+    message: '상황별로 바로 따라 할 수 있는 현실적인 한 끼 레시피를 소개합니다.',
+  },
 ]
 
 const breakfastCards = [
@@ -190,10 +195,10 @@ const recipeCards = [
     title: '닭가슴살 채소 또띠아',
     situation: '야식이나 배달음식이 당길 때',
     ingredients: '통밀 또띠아, 닭가슴살, 양상추, 파프리카, 양배추, 플레인 요거트 소스',
-    points: [
-      '단백질을 보충하면서 포만감을 높일 수 있음',
-      '채소 섭취를 늘리는 데 도움이 됨',
-      '튀긴 음식이나 고열량 야식 대체식으로 활용 가능',
+    steps: [
+      '또띠아를 살짝 데우고 채소는 먹기 좋게 썰기',
+      '닭가슴살과 채소를 올린 뒤 요거트 소스를 소량 넣기',
+      '또띠아를 말아 한입 크기로 잘라 먹기',
     ],
     tip: '소스는 마요네즈보다 플레인 요거트나 머스터드를 활용하면 부담을 줄일 수 있음',
   },
@@ -202,10 +207,10 @@ const recipeCards = [
     title: '두부참치 채소 비빔밥',
     situation: '집에 있는 재료로 빠르게 저녁을 먹고 싶을 때',
     ingredients: '현미밥 또는 잡곡밥, 두부, 참치, 상추 또는 양배추, 오이, 김가루, 저염 간장 양념',
-    points: [
-      '두부와 참치로 단백질을 보충할 수 있음',
-      '채소와 잡곡밥을 함께 먹어 포만감을 높일 수 있음',
-      '양념 양을 조절하면 나트륨 섭취를 줄이는 데 도움이 됨',
+    steps: [
+      '밥 위에 채소, 으깬 두부, 기름을 뺀 참치를 올리기',
+      '저염 간장 양념을 조금씩 넣으며 간 맞추기',
+      '김가루를 더해 가볍게 비벼 먹기',
     ],
     tip: '참치는 기름을 가볍게 제거하고, 양념장은 한 번에 붓지 말고 조금씩 넣어 간을 맞추기',
   },
@@ -214,10 +219,10 @@ const recipeCards = [
     title: '그릭요거트 견과 볼',
     situation: '아침을 거르기 쉬운 날 또는 늦은 밤 가벼운 간식이 필요할 때',
     ingredients: '무가당 그릭요거트, 견과류, 바나나 또는 베리류, 오트밀 소량',
-    points: [
-      '단백질과 식이섬유를 함께 챙길 수 있음',
-      '단 음료나 과자 대신 선택하기 좋음',
-      '준비 시간이 짧아 바쁜 직장인에게 적합함',
+    steps: [
+      '그릭요거트를 그릇에 담기',
+      '과일과 오트밀을 올리고 견과류를 소량 더하기',
+      '시럽 없이 과일 단맛으로 가볍게 먹기',
     ],
     tip: '시럽이나 초코 토핑은 줄이고, 과일로 단맛을 보충하기',
   },
@@ -228,6 +233,7 @@ const categoryCards = {
   lunch: lunchCards,
   dinner: dinnerCards,
   smart: smartCards,
+  recipe: recipeCards,
 }
 
 function MealDetailCard({ card }) {
@@ -295,12 +301,12 @@ function RecipeCard({ recipe }) {
       </dl>
 
       <div className="recipe-points">
-        <h5>포인트</h5>
-        <ul>
-          {recipe.points.map((point) => (
-            <li key={point}>{point}</li>
+        <h5>만드는 순서</h5>
+        <ol>
+          {recipe.steps.map((step) => (
+            <li key={step}>{step}</li>
           ))}
-        </ul>
+        </ol>
       </div>
 
       <p className="recipe-tip">
@@ -351,7 +357,14 @@ export default function MealTab() {
         </article>
       )}
 
-      {cards && (
+      {selectedCategory === 'recipe' && (
+        <article className="meal-guide-card">
+          <h3>{currentCategory.label}</h3>
+          <p>{currentCategory.message}</p>
+        </article>
+      )}
+
+      {cards && selectedCategory !== 'recipe' && (
         <section className="meal-breakfast-list">
           {cards.map((card) => (
             <MealDetailCard card={card} key={card.title} />
@@ -359,18 +372,13 @@ export default function MealTab() {
         </section>
       )}
 
-      <section className="recipe-section">
-        <div className="recipe-section-header">
-          <h3>간단 레시피</h3>
-          <p>바쁜 퇴근 후에도 부담 없이 따라 할 수 있는 현실적인 한 끼 예시입니다.</p>
-        </div>
+      {selectedCategory === 'recipe' && (
         <div className="recipe-list">
           {recipeCards.map((recipe) => (
             <RecipeCard key={recipe.title} recipe={recipe} />
           ))}
         </div>
-      </section>
+      )}
     </section>
   )
 }
-import React from 'react'
