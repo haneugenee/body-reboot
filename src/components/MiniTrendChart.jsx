@@ -1,3 +1,5 @@
+import React from 'react'
+
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 
 const formatValue = (value, unit) =>

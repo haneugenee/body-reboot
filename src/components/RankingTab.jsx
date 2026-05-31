@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { getHealthProfileNickname, getWeeklyMissionScore } from '../utils/storage.js'
 
 const sampleRankings = [

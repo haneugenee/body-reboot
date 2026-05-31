@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { getTodayMissionRecord, saveTodayMissionRecord } from '../utils/storage.js'
 
 const DIET_TITLE = '식사 속도를 늦추고 15분 이상 천천히 먹기'

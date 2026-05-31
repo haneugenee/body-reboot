@@ -1,3 +1,5 @@
+import React from 'react'
+
 import HealthCheck from './HealthCheck.jsx'
 import MealTab from './MealTab.jsx'
 import MissionTab from './MissionTab.jsx'

@@ -1,3 +1,5 @@
+import React from 'react'
+
 const BMI_MIN = 15
 const BMI_MAX = 35
 

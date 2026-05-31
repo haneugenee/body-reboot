@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default function BottomNav({ tabs, activeTabId, onTabChange }) {
   return (
     <nav className="bottom-nav" aria-label="주요 메뉴">

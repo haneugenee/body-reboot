@@ -373,4 +373,4 @@ export default function MealTab() {
     </section>
   )
 }
-
+import React from 'react'

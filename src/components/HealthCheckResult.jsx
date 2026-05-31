@@ -1,3 +1,5 @@
+import React from 'react'
+
 import BmiRangeGraph from './BmiRangeGraph.jsx'
 
 export default function HealthCheckResult({
