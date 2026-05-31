@@ -252,6 +252,38 @@ button {
   line-height: 1.65;
 }
 
+.health-check-intro {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.2rem;
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(114, 170, 188, 0.14);
+}
+
+.health-check-intro-lead {
+  margin: 0;
+  color: #1b4058;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.health-check-intro-body {
+  margin: 0;
+  color: #395d6f;
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+.health-check-intro-note {
+  margin: 0.15rem 0 0;
+  color: #5f7b89;
+  font-size: 0.81rem;
+  line-height: 1.55;
+}
+
 .health-check-form {
   display: grid;
   gap: 0.9rem;

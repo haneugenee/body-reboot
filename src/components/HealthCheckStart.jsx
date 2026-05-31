@@ -34,6 +34,19 @@ export default function HealthCheckStart({ profile, setProfile, onStartSurvey })
         기본 정보를 입력하면 다음 단계에서 생활습관 설문을 진행합니다.
       </p>
 
+      <div className="health-check-intro" aria-label="앱 소개">
+        <p className="health-check-intro-lead">
+          바쁜 3040 직장인 남성을 위한 생활 밀착형 비만 관리 솔루션입니다.
+        </p>
+        <p className="health-check-intro-body">
+          거창한 다이어트가 아니라, 식단과 운동의 작은 실천을 쌓아 몸과 습관을
+          다시 시작합니다.
+        </p>
+        <p className="health-check-intro-note">
+          이 앱은 의료 진단이 아니라 영양교육 실습용 자가진단입니다.
+        </p>
+      </div>
+
       <form className="health-check-form" onSubmit={handleSubmit}>
         <label className="form-field">
           <span>닉네임</span>
