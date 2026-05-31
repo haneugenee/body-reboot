@@ -1274,10 +1274,27 @@ button {
   padding: 1rem;
 }
 
+.mission-detail-card {
+  padding: 0.72rem 0.78rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 24px rgba(34, 83, 111, 0.07);
+}
+
 .mission-calendar-card h3,
 .mission-detail-card h3 {
   margin: 0 0 0.7rem;
   color: #204259;
+}
+
+.mission-detail-card .mission-detail-title-original {
+  display: none;
+}
+
+.mission-detail-title-compact {
+  margin: 0 0 0.5rem;
+  color: #204259;
+  font-size: 0.95rem;
+  line-height: 1.25;
 }
 
 .mission-calendar-grid {
@@ -1323,7 +1340,8 @@ button {
 .mission-detail-empty {
   margin: 0;
   color: #4e6d7c;
-  line-height: 1.55;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .mission-detail-grid {
@@ -1356,6 +1374,33 @@ button {
 .mission-detail-grid .mission-detail-total {
   grid-column: 1 / -1;
   background: linear-gradient(145deg, #e6f8f2, #fff4c9);
+}
+
+.mission-detail-compact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.mission-detail-compact div {
+  padding: 0.48rem 0.56rem;
+  border-radius: 0.7rem;
+  background: #f5fbfe;
+}
+
+.mission-detail-compact dt {
+  margin: 0;
+  color: #5a7482;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.mission-detail-compact dd {
+  margin: 0.2rem 0 0;
+  color: #173f56;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .weekly-summary-card {

@@ -53,6 +53,11 @@ export default function RecordTab() {
     getMissionRecordByDate(selectedDate) ?? missionRecords[selectedDate] ?? null
   const selectedDiet = selectedMissionRecord?.diet ?? null
   const selectedExercise = selectedMissionRecord?.exercise ?? null
+  const selectedTotalScore = Number(selectedMissionRecord?.totalScore ?? 0)
+  const shortMissionTitle = (title) => {
+    if (!title) return '기록 없음'
+    return title.length > 20 ? `${title.slice(0, 20)}...` : title
+  }
 
   const statusMessage =
     count === 0
@@ -210,6 +215,7 @@ export default function RecordTab() {
       </section>
 
       <section className="mission-detail-card">
+        <h4 className="mission-detail-title-compact">선택 날짜 기록</h4>
         <h3>선택한 날짜의 미션 기록 상세</h3>
 
         {!selectedMissionRecord && (
@@ -217,6 +223,33 @@ export default function RecordTab() {
         )}
 
         {selectedMissionRecord && (
+          <div className="mission-detail-compact">
+            <div>
+              <dt>날짜</dt>
+              <dd>{selectedDate}</dd>
+            </div>
+            <div>
+              <dt>실천 점수</dt>
+              <dd>{selectedTotalScore}점</dd>
+            </div>
+            <div>
+              <dt>식단 미션</dt>
+              <dd>
+                {selectedDiet?.status === 'complete' ? '완료' : '미완료'} ·{' '}
+                {shortMissionTitle(selectedDiet?.title)}
+              </dd>
+            </div>
+            <div>
+              <dt>운동 미션</dt>
+              <dd>
+                {selectedExercise?.status === 'complete' ? '완료' : '미완료'} ·{' '}
+                {shortMissionTitle(selectedExercise?.title)}
+              </dd>
+            </div>
+          </div>
+        )}
+
+        {selectedMissionRecord && false && (
           <div className="mission-detail-grid">
             <div>
               <dt>식단 미션 제목</dt>
