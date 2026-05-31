@@ -847,23 +847,27 @@ button {
 
 .meal-category-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.45rem;
-  overflow-x: auto;
-  padding-bottom: 0.2rem;
-  scrollbar-width: thin;
+  overflow-x: visible;
+  padding-bottom: 0;
+  scrollbar-width: auto;
 }
 
 .meal-category-chip {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   min-height: 2.45rem;
-  padding: 0 0.9rem;
+  min-width: 5.1rem;
+  padding: 0 0.82rem;
   border: 1px solid rgba(111, 157, 176, 0.3);
   border-radius: 999px;
   color: #325567;
   background: #f7fcfe;
   font-weight: 800;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .meal-category-chip.is-active {

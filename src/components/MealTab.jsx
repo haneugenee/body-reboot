@@ -359,13 +359,6 @@ export default function MealTab() {
         </article>
       )}
 
-      {selectedCategory === 'recipe' && (
-        <article className="meal-guide-card">
-          <h3>{currentCategory.label}</h3>
-          <p>{currentCategory.message}</p>
-        </article>
-      )}
-
       {cards && selectedCategory !== 'recipe' && (
         <section className="meal-breakfast-list">
           {cards.map((card) => (
