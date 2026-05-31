@@ -37,8 +37,7 @@ export default function RankingTab() {
         <p className="eyebrow">WEEKLY RANKING</p>
         <h2>주간 랭킹</h2>
         <p>
-          이번 주 미션 실천 점수를 기준으로 비교합니다. 체중이 아니라 실천을
-          비교합니다.
+          이번 주 실천 순위를 확인해 보세요.
         </p>
       </div>
 

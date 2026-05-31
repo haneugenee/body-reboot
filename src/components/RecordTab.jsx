@@ -61,11 +61,6 @@ export default function RecordTab() {
   const selectedDiet = selectedMissionRecord?.diet ?? null
   const selectedExercise = selectedMissionRecord?.exercise ?? null
   const selectedTotalScore = Number(selectedMissionRecord?.totalScore ?? 0)
-  const shortMissionTitle = (title) => {
-    if (!title) return '기록 없음'
-    return title.length > 20 ? `${title.slice(0, 20)}...` : title
-  }
-
   const statusMessage =
     count === 0
       ? '아직 건강체크 기록이 없습니다.'
@@ -225,16 +220,11 @@ export default function RecordTab() {
             </div>
             <div>
               <dt>식단 미션</dt>
-              <dd>
-                {toStatusLabel(selectedDiet?.status)} - {shortMissionTitle(selectedDiet?.title)}
-              </dd>
+              <dd>{toStatusLabel(selectedDiet?.status)}</dd>
             </div>
             <div>
               <dt>운동 미션</dt>
-              <dd>
-                {toStatusLabel(selectedExercise?.status)} -{' '}
-                {shortMissionTitle(selectedExercise?.title)}
-              </dd>
+              <dd>{toStatusLabel(selectedExercise?.status)}</dd>
             </div>
           </div>
         )}

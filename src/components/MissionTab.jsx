@@ -14,6 +14,7 @@ const walkingStats = [
 const getScoreByStatus = (status) => {
   if (status === 'complete') return 10
   if (status === 'half') return 5
+  if (status === 'record') return 2
   return 0
 }
 

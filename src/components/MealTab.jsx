@@ -85,6 +85,17 @@ const breakfastCards = [
 
 const lunchCards = [
   {
+    title: '오늘의 외식 추천 메뉴',
+    contextLabel: '오늘의 추천 메뉴',
+    menu: '생선구이 정식',
+    featuredMenu: '생선구이 정식',
+    nutrition:
+      '생선으로 단백질을 보충할 수 있고, 튀김 메뉴보다 기름 부담이 적습니다. 밥·생선·반찬을 함께 구성해 한 끼 균형을 맞추기 쉬우며, 채소 반찬을 곁들이면 식이섬유 섭취에도 도움이 됩니다.',
+    tips: ['국물은 적게 먹기', '짠 반찬과 소스는 양 조절하기', '밥 양이 많으면 조금 남기기'],
+    caution: '국, 김치, 젓갈, 간장 양념은 양을 조절해 나트륨 부담을 낮춰보세요.',
+    action: '오늘 외식은 생선구이 정식으로 가볍고 균형 있게 구성해보세요.',
+  },
+  {
     title: '편의점 점심 조합',
     contextLabel: '예시 메뉴',
     menu: '삼각김밥 또는 작은 주먹밥 + 삶은 달걀 + 샐러드 + 물',
@@ -92,15 +103,6 @@ const lunchCards = [
     tips: ['컵라면만 먹지 않기', '단백질 식품 하나 추가', '국물과 단 음료 줄이기'],
     caution: '컵라면 + 삼각김밥 + 단 음료 조합',
     action: '편의점 식사도 조합하면 균형을 맞출 수 있어요.',
-  },
-  {
-    title: '오늘의 외식 추천 메뉴',
-    contextLabel: '예시 메뉴',
-    menu: '생선구이 정식, 한식 백반, 순두부찌개 정식',
-    nutrition: '외식에서도 단백질과 채소 반찬을 함께 챙길 수 있어요.',
-    tips: ['국물은 절반 이하로', '밥은 1/3 정도 덜기', '튀김보다 구이·찜 선택'],
-    caution: '국물까지 모두 먹기 + 밥 추가',
-    action: '외식은 국물, 밥 양, 채소 조절이 핵심이에요.',
   },
   {
     title: '도시락 추천',
@@ -246,7 +248,13 @@ function MealDetailCard({ card }) {
       <dl className="meal-detail-grid">
         <div>
           <dt>📌 {card.contextLabel || '예시 메뉴'}</dt>
-          <dd>{card.menu}</dd>
+          <dd>
+            {card.featuredMenu ? (
+              <span className="meal-featured-menu">{card.featuredMenu}</span>
+            ) : (
+              card.menu
+            )}
+          </dd>
         </div>
         <div>
           <dt>💡 영양 포인트</dt>
@@ -275,7 +283,7 @@ function MealDetailCard({ card }) {
       )}
 
       <p className="meal-caution">
-        <strong>⚠️ 줄이면 좋은 선택:</strong> {card.caution}
+        <strong>⚠️ 주의:</strong> {card.caution}
       </p>
 
       <p className="meal-action-line">{card.action}</p>
