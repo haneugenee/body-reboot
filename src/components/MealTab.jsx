@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 const mealCategories = [
   {
@@ -184,6 +184,45 @@ const smartCards = [
   },
 ]
 
+const recipeCards = [
+  {
+    label: '퇴근 후',
+    title: '닭가슴살 채소 또띠아',
+    situation: '야식이나 배달음식이 당길 때',
+    ingredients: '통밀 또띠아, 닭가슴살, 양상추, 파프리카, 양배추, 플레인 요거트 소스',
+    points: [
+      '단백질을 보충하면서 포만감을 높일 수 있음',
+      '채소 섭취를 늘리는 데 도움이 됨',
+      '튀긴 음식이나 고열량 야식 대체식으로 활용 가능',
+    ],
+    tip: '소스는 마요네즈보다 플레인 요거트나 머스터드를 활용하면 부담을 줄일 수 있음',
+  },
+  {
+    label: '집밥',
+    title: '두부참치 채소 비빔밥',
+    situation: '집에 있는 재료로 빠르게 저녁을 먹고 싶을 때',
+    ingredients: '현미밥 또는 잡곡밥, 두부, 참치, 상추 또는 양배추, 오이, 김가루, 저염 간장 양념',
+    points: [
+      '두부와 참치로 단백질을 보충할 수 있음',
+      '채소와 잡곡밥을 함께 먹어 포만감을 높일 수 있음',
+      '양념 양을 조절하면 나트륨 섭취를 줄이는 데 도움이 됨',
+    ],
+    tip: '참치는 기름을 가볍게 제거하고, 양념장은 한 번에 붓지 말고 조금씩 넣어 간을 맞추기',
+  },
+  {
+    label: '간식 대체',
+    title: '그릭요거트 견과 볼',
+    situation: '아침을 거르기 쉬운 날 또는 늦은 밤 가벼운 간식이 필요할 때',
+    ingredients: '무가당 그릭요거트, 견과류, 바나나 또는 베리류, 오트밀 소량',
+    points: [
+      '단백질과 식이섬유를 함께 챙길 수 있음',
+      '단 음료나 과자 대신 선택하기 좋음',
+      '준비 시간이 짧아 바쁜 직장인에게 적합함',
+    ],
+    tip: '시럽이나 초코 토핑은 줄이고, 과일로 단맛을 보충하기',
+  },
+]
+
 const categoryCards = {
   breakfast: breakfastCards,
   lunch: lunchCards,
@@ -236,6 +275,41 @@ function MealDetailCard({ card }) {
   )
 }
 
+function RecipeCard({ recipe }) {
+  return (
+    <article className="recipe-card">
+      <div className="recipe-head">
+        <span className="recipe-label">{recipe.label}</span>
+        <h4>{recipe.title}</h4>
+      </div>
+
+      <dl className="recipe-grid">
+        <div>
+          <dt>추천 상황</dt>
+          <dd>{recipe.situation}</dd>
+        </div>
+        <div>
+          <dt>구성</dt>
+          <dd>{recipe.ingredients}</dd>
+        </div>
+      </dl>
+
+      <div className="recipe-points">
+        <h5>포인트</h5>
+        <ul>
+          {recipe.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="recipe-tip">
+        <strong>실천 팁:</strong> {recipe.tip}
+      </p>
+    </article>
+  )
+}
+
 export default function MealTab() {
   const [selectedCategory, setSelectedCategory] = useState(mealCategories[0].key)
   const currentCategory =
@@ -284,6 +358,19 @@ export default function MealTab() {
           ))}
         </section>
       )}
+
+      <section className="recipe-section">
+        <div className="recipe-section-header">
+          <h3>간단 레시피</h3>
+          <p>바쁜 퇴근 후에도 부담 없이 따라 할 수 있는 현실적인 한 끼 예시입니다.</p>
+        </div>
+        <div className="recipe-list">
+          {recipeCards.map((recipe) => (
+            <RecipeCard key={recipe.title} recipe={recipe} />
+          ))}
+        </div>
+      </section>
     </section>
   )
 }
+
