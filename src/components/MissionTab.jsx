@@ -35,14 +35,21 @@ function MissionCard({ typeLabel, title, description, status, onSelect }) {
           className={`mission-btn complete ${status === 'complete' ? 'is-selected' : ''}`}
           onClick={() => onSelect('complete')}
         >
-          완료 +10점
+          완료
         </button>
         <button
           type="button"
           className={`mission-btn half ${status === 'half' ? 'is-selected' : ''}`}
           onClick={() => onSelect('half')}
         >
-          절반 성공 +5점
+          절반 성공
+        </button>
+        <button
+          type="button"
+          className={`mission-btn record ${status === 'record' ? 'is-selected' : ''}`}
+          onClick={() => onSelect('record')}
+        >
+          기록만 하기
         </button>
       </div>
     </article>

@@ -818,6 +818,21 @@ button {
   border-color: rgba(122, 155, 171, 0.32);
 }
 
+.mission-btn.record {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: auto;
+  min-width: 7.2rem;
+  min-height: 2.25rem;
+  padding: 0 0.9rem;
+  border-radius: 0.78rem;
+  border-color: rgba(129, 158, 172, 0.32);
+  background: #f8fbfd;
+  color: #4f6a79;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .mission-btn.is-selected {
   color: #133d53;
   font-weight: 900;
@@ -831,6 +846,14 @@ button {
 
 .mission-btn.half.is-selected {
   background: linear-gradient(140deg, #e4f6f3, #eff8fb);
+}
+
+.mission-btn.record.is-selected {
+  background: linear-gradient(140deg, #edf4f8, #e8f0f5);
+  border-color: rgba(108, 145, 162, 0.45);
+  box-shadow: 0 0 0 0.2rem rgba(125, 161, 177, 0.15);
+  color: #375365;
+  font-weight: 800;
 }
 
 .mission-today-summary {
