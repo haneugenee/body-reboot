@@ -1189,7 +1189,9 @@ button {
 .recipe-head h4 {
   margin: 0;
   color: #173f56;
-  font-size: 1.02rem;
+  font-size: 1.18rem;
+  font-weight: 900;
+  line-height: 1.32;
 }
 
 .recipe-grid {
