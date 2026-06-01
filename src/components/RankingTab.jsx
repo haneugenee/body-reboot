@@ -2,10 +2,11 @@ import React, { useMemo } from 'react'
 import { getHealthProfileNickname, getWeeklyMissionScore } from '../utils/storage.js'
 
 const sampleRankings = [
-  { name: '민수', score: 75, isMe: false },
-  { name: '준호', score: 62, isMe: false },
-  { name: '태현', score: 48, isMe: false },
-  { name: '성훈', score: 35, isMe: false },
+  { name: '민수', score: 45, isMe: false },
+  { name: '준호', score: 39, isMe: false },
+  { name: '태현', score: 25, isMe: false },
+  { name: '성훈', score: 12, isMe: false },
+  { name: '우진', score: 7, isMe: false },
 ]
 
 export default function RankingTab() {
@@ -18,17 +19,26 @@ export default function RankingTab() {
       { name: myName, score: myScore, isMe: true },
     ]
 
-    return combined
+    const sorted = combined
       .sort((a, b) => {
         if (b.score !== a.score) return b.score - a.score
         if (a.isMe && !b.isMe) return -1
         if (!a.isMe && b.isMe) return 1
         return 0
       })
-      .map((row, index) => ({
+
+    let previousScore = null
+    let previousRank = 0
+
+    return sorted.map((row, index) => {
+      const rank = previousScore === row.score ? previousRank : index + 1
+      previousScore = row.score
+      previousRank = rank
+      return {
         ...row,
-        rank: index + 1,
-      }))
+        rank,
+      }
+    })
   }, [myName, myScore])
 
   return (

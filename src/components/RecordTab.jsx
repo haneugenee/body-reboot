@@ -14,7 +14,7 @@ const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토']
 const toStatusLabel = (status) => {
   if (status === 'complete') return '완료'
   if (status === 'half') return '절반 성공'
-  if (status === 'record') return '기록만 하기'
+  if (status === 'record') return '출석만 하기'
   return '없음'
 }
 

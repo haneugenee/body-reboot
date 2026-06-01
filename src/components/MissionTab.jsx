@@ -50,7 +50,7 @@ function MissionCard({ typeLabel, title, description, status, onSelect }) {
           className={`mission-btn record ${status === 'record' ? 'is-selected' : ''}`}
           onClick={() => onSelect('record')}
         >
-          기록만 하기
+          출석만 하기
         </button>
       </div>
     </article>

@@ -247,7 +247,9 @@ function MealDetailCard({ card }) {
 
       <dl className="meal-detail-grid">
         <div>
-          <dt>📌 {card.contextLabel || '예시 메뉴'}</dt>
+          {card.contextLabel && card.contextLabel !== '예시 메뉴' && (
+            <dt>📌 {card.contextLabel}</dt>
+          )}
           <dd>
             {card.featuredMenu ? (
               <span className="meal-featured-menu">{card.featuredMenu}</span>

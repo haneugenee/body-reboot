@@ -1040,7 +1040,7 @@ button {
 .meal-detail-card h3 {
   margin: 0;
   color: #173f56;
-  font-size: 1.08rem;
+  font-size: 1.16rem;
 }
 
 .meal-detail-grid {
@@ -1063,8 +1063,8 @@ button {
 .meal-detail-grid dd {
   margin: 0.28rem 0 0;
   color: #183f56;
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 800;
   line-height: 1.45;
 }
 
