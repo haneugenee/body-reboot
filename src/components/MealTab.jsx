@@ -147,7 +147,7 @@ const dinnerCards = [
 
 const smartCards = [
   {
-    title: '국밥 먹을 때',
+    title: '국밥',
     contextLabel: '예시 상황',
     menu: '국밥, 설렁탕, 순대국, 해장국을 먹을 때',
     nutrition: '국밥은 나트륨과 밥 양 조절이 중요해요.',
@@ -156,7 +156,7 @@ const smartCards = [
     action: '국밥은 국물과 밥 양만 조절해도 달라져요.',
   },
   {
-    title: '중식 먹을 때',
+    title: '중식',
     contextLabel: '예시 상황',
     menu: '짜장면, 짬뽕, 볶음밥, 탕수육을 먹을 때',
     nutrition: '중식은 기름, 나트륨, 탄수화물 양 조절이 중요해요.',
@@ -165,7 +165,7 @@ const smartCards = [
     action: '중식은 양, 소스, 국물만 조절해도 부담이 줄어요.',
   },
   {
-    title: '돈가스/튀김류 먹을 때',
+    title: '튀김류',
     contextLabel: '예시 상황',
     menu: '돈가스, 치킨가스, 튀김덮밥, 튀김정식을 먹을 때',
     nutrition: '튀김류는 지방과 소스 양을 줄이는 것이 중요해요.',
@@ -174,7 +174,7 @@ const smartCards = [
     action: '튀김 메뉴는 소스와 밥 양부터 줄여보세요.',
   },
   {
-    title: '고기 먹을 때',
+    title: '고기',
     contextLabel: '예시 상황',
     menu: '삼겹살, 갈비, 제육, 보쌈, 회식 고기 메뉴를 먹을 때',
     nutrition: '고기 메뉴는 포화지방과 과식을 조절하는 것이 중요해요.',
@@ -183,7 +183,7 @@ const smartCards = [
     action: '고기 메뉴는 채소와 함께, 마무리 탄수화물은 줄여보세요.',
   },
   {
-    title: '분식 먹을 때',
+    title: '분식',
     contextLabel: '예시 상황',
     menu: '떡볶이, 김밥, 라면, 튀김, 순대를 먹을 때',
     nutrition: '분식은 탄수화물과 나트륨이 많아 조합을 줄이는 것이 중요해요.',
@@ -247,25 +247,24 @@ function MealDetailCard({ card }) {
 
       <dl className="meal-detail-grid">
         <div>
-          {card.contextLabel && card.contextLabel !== '예시 메뉴' && (
-            <dt>📌 {card.contextLabel}</dt>
-          )}
           <dd>
             {card.featuredMenu ? (
-              <span className="meal-featured-menu">{card.featuredMenu}</span>
+              <span className="meal-featured-menu">📌 {card.featuredMenu}</span>
             ) : (
-              card.menu
+              `📌 ${card.menu}`
             )}
           </dd>
         </div>
         <div>
-          <dt>💡 영양 포인트</dt>
-          <dd>{card.nutrition}</dd>
+          <dt className="meal-section-label">💡 영양 포인트</dt>
+          <dd>
+            <p className="meal-nutrition-text">{card.nutrition}</p>
+          </dd>
         </div>
       </dl>
 
       <div className="meal-detail-block">
-        <h4>✅ 실천 팁</h4>
+        <h4 className="meal-section-label">✅ 실천 팁</h4>
         <ul>
           {card.tips.map((tip) => (
             <li key={tip}>{tip}</li>
@@ -284,11 +283,11 @@ function MealDetailCard({ card }) {
         </div>
       )}
 
+      <p className="meal-action-line">{card.action}</p>
+
       <p className="meal-caution">
         <strong>⚠️ 주의:</strong> {card.caution}
       </p>
-
-      <p className="meal-action-line">{card.action}</p>
     </article>
   )
 }
