@@ -3,6 +3,7 @@ const STORAGE_KEYS = {
   responses: 'preSurveyResponses',
   scores: 'preSurveyScores',
   history: 'healthCheckHistory',
+  bodyChangeHistory: 'bodyChangeHistory',
   dailyMissionRecords: 'dailyMissionRecords',
 }
 
@@ -88,6 +89,46 @@ const sanitizeScores = (scores) => {
     topImprovements: Array.isArray(scores.topImprovements)
       ? scores.topImprovements.map((item) => String(item))
       : [],
+    hasImprovements:
+      typeof scores.hasImprovements === 'boolean'
+        ? scores.hasImprovements
+        : Array.isArray(scores.topImprovements) && scores.topImprovements.length > 0,
+    maintenanceMessage:
+      typeof scores.maintenanceMessage === 'string' && scores.maintenanceMessage.trim() !== ''
+        ? scores.maintenanceMessage
+        : '현재 생활습관 실천 점수가 매우 좋습니다. 지금의 식사·신체활동 습관을 꾸준히 유지해 보세요.',
+  }
+}
+
+const getBmiCategory = (bmi) => {
+  if (bmi < 18.5) return '저체중'
+  if (bmi < 23) return '정상'
+  if (bmi < 25) return '과체중'
+  return '비만'
+}
+
+const calculateBmi = ({ height, weight }) => {
+  const safeHeight = Number(height ?? 0)
+  const safeWeight = Number(weight ?? 0)
+  const heightInMeters = safeHeight / 100
+
+  if (heightInMeters <= 0 || safeWeight <= 0) return 0
+  return Number((safeWeight / (heightInMeters * heightInMeters)).toFixed(1))
+}
+
+const sanitizeBodyChangeRecord = (record) => {
+  if (!isObject(record)) return null
+
+  const date = String(record.date ?? '').trim()
+  if (!date) return null
+
+  return {
+    date,
+    nickname: String(record.nickname ?? ''),
+    height: Number(record.height ?? 0),
+    weight: Number(record.weight ?? 0),
+    bmi: Number(record.bmi ?? 0),
+    bmiCategory: String(record.bmiCategory ?? ''),
   }
 }
 
@@ -111,6 +152,40 @@ export function saveHealthCheckData({ profile, responses, scores }) {
   safeWrite(STORAGE_KEYS.scores, sanitizeScores(scores))
 }
 
+export function getBodyChangeHistory() {
+  const history = safeRead(STORAGE_KEYS.bodyChangeHistory, [])
+  if (!Array.isArray(history)) return []
+
+  return history
+    .map((item) => sanitizeBodyChangeRecord(item))
+    .filter((item) => Boolean(item))
+}
+
+export function saveBodyChangeRecord(record) {
+  const safeRecord = sanitizeBodyChangeRecord(record)
+  if (!safeRecord) return
+
+  const history = getBodyChangeHistory()
+  safeWrite(STORAGE_KEYS.bodyChangeHistory, [...history, safeRecord])
+}
+
+export function createBodyChangeRecord({ weight }) {
+  const profile = sanitizeProfile(safeRead(STORAGE_KEYS.profile, defaultProfile))
+  const resolvedWeight =
+    String(weight ?? '').trim() === '' ? Number(profile.weight ?? 0) : Number(weight)
+  const resolvedHeight = Number(profile.height ?? 0)
+  const bmi = calculateBmi({ height: resolvedHeight, weight: resolvedWeight })
+
+  return sanitizeBodyChangeRecord({
+    date: getTodayKey(),
+    nickname: profile.nickname,
+    height: resolvedHeight,
+    weight: resolvedWeight,
+    bmi,
+    bmiCategory: getBmiCategory(bmi),
+  })
+}
+
 export function appendHealthCheckHistory({ profile, scores }) {
   const now = new Date()
   const createdAt = now.toISOString()
@@ -131,6 +206,15 @@ export function appendHealthCheckHistory({ profile, scores }) {
   const history = safeRead(STORAGE_KEYS.history, [])
   const safeHistory = Array.isArray(history) ? history : []
   safeWrite(STORAGE_KEYS.history, [...safeHistory, historyItem])
+
+  saveBodyChangeRecord({
+    date: getTodayKey(),
+    nickname: String(profile.nickname ?? ''),
+    height: Number(profile.height ?? 0),
+    weight: Number(profile.weight ?? 0),
+    bmi: Number(scores.bmiValue ?? 0),
+    bmiCategory: String(scores.bmiCategory ?? ''),
+  })
 }
 
 export function getHealthCheckHistory() {

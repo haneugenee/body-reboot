@@ -5,7 +5,6 @@ import HealthCheckResult from './HealthCheckResult.jsx'
 import { calculateHealthResult } from '../utils/healthScore.js'
 import {
   appendHealthCheckHistory,
-  clearCurrentHealthCheck,
   loadHealthCheckState,
   saveHealthCheckData,
 } from '../utils/storage.js'
@@ -191,12 +190,6 @@ export default function HealthCheck() {
     }
   }, [step])
 
-  const emptyProfile = {
-    nickname: '',
-    height: '',
-    weight: '',
-  }
-
   const handleCompleteSurvey = () => {
     const latestResult = calculateHealthResult(profile, surveyQuestions, surveyResponses)
 
@@ -213,14 +206,6 @@ export default function HealthCheck() {
       profile,
       scores: latestResult,
     })
-  }
-
-  const handleRestartHealthCheck = () => {
-    setProfile(emptyProfile)
-    setSurveyResponses({})
-    setSavedResult(null)
-    setStep('profile')
-    clearCurrentHealthCheck()
   }
 
   if (step === 'profile') {
@@ -250,7 +235,6 @@ export default function HealthCheck() {
       profile={profile}
       result={result}
       onEditResponses={() => setStep('survey')}
-      onRestart={handleRestartHealthCheck}
     />
   )
 }

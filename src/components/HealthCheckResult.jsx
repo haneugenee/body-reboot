@@ -6,7 +6,6 @@ export default function HealthCheckResult({
   profile,
   result,
   onEditResponses,
-  onRestart,
 }) {
   return (
     <section className="result-card">
@@ -53,9 +52,6 @@ export default function HealthCheckResult({
       </section>
 
       <div className="result-actions">
-        <button type="button" className="primary-action result-primary-action" onClick={onRestart}>
-          변화 기록 추가하기
-        </button>
         <button type="button" className="result-edit-link" onClick={onEditResponses}>
           응답 수정하기
         </button>
