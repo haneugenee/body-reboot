@@ -10,7 +10,6 @@ export default function Header() {
         <div className="brand-text">
           <p className="brand-kicker">3040 직장인 건강 루틴</p>
           <h1>BODY REBOOT</h1>
-          <p className="brand-name">바디 리부트</p>
         </div>
       </div>
     </header>
